@@ -189,11 +189,18 @@
         </div>
     `);
     totalRows++;
-    init();
     }
 
     function addColumnOnRow(rowId,columns){
-      alert(rowId);
+      let cols = ``;
+      columns.forEach(function(col,index){
+        cols += `
+        <div class="connectedSortable col-md-${col}"></div>
+        `;
+      });
+      $(`#row-${rowId}`).html(cols);
+      console.log(cols);
+      init();
     }
   </script>
 </body>
