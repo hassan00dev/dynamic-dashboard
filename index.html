@@ -184,7 +184,7 @@
         </div>`;
 
       $("#dashboard-container").append(`
-        <div class="row px-1 row-border mb-2" id="row-${totalRows}">
+        <div class="row px-1 row-border mb-2 p-1" id="row-${totalRows}">
           ${selectColumns}
         </div>
     `);
@@ -194,11 +194,11 @@
     function addColumnOnRow(rowId,columns){
       let cols = ``;
       columns.forEach(function(col,index){
-        cols += `
-        <div class="connectedSortable col-md-${col}"></div>
-        `;
+        cols += `<div class="connectedSortable col-md-${col}"></div>`;
       });
-      $(`#row-${rowId}`).html(cols);
+      let row = $(`#row-${rowId}`);
+      row.html(cols);
+      row.addClass('col-row-height');
       console.log(cols);
       init();
     }
