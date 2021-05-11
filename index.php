@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,34 +15,41 @@
     /* .add-row-height {
       height: 60px;
     } */
-    .row-border{
+    .row-border {
       border: 2px dashed #007bff;
       border-radius: 5px;
     }
-    .col-row-height{
+
+    .col-row-height {
       height: 60px;
     }
-    .col-row{
-      height:30px;
-      margin-top:7px;
-      margin-bottom:7px;
+
+    .col-row {
+      height: 30px;
+      margin-top: 7px;
+      margin-bottom: 7px;
     }
-    .col-row:hover{
+
+    .col-row:hover {
       background-color: #eaedf1;
     }
-    .col-text{
+
+    .col-text {
       font-size: 20px;
     }
-    .col-border{
-      border:1px solid grey;
+
+    .col-border {
+      border: 1px solid grey;
     }
-    .col-border-radius-start{
-      border-top-left-radius:5px;
-      border-bottom-left-radius:5px;
+
+    .col-border-radius-start {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
-    .col-border-radius-end{
-      border-top-right-radius:5px;
-      border-bottom-right-radius:5px;
+
+    .col-border-radius-end {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
   </style>
 </head>
@@ -51,9 +59,7 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+      <div class="spinner-border" role="status"></div>
     </div>
 
     <!-- Content Wrapper. Contains page content -->
@@ -78,13 +84,13 @@
 
       <!-- Main content -->
       <section class="content">
-        <div class="container">
+        <div class="container-fluid">
 
           <div class="row mt-3">
 
-            <section class="col-lg-3 connectedSortable">
+            <section class="col-lg-3 connectedSortable" style="height:90vh;overflow:hidden;overflow-y:scroll;">
 
-              <div class="card">
+              <div class="card mb-1">
                 <div class="card-header">
                   <h3 class="card-title">
                     <i class="fas fa-chart-pie mr-1"></i>
@@ -92,23 +98,30 @@
                   </h3>
                 </div>
               </div>
-
+              <?php $i=0; while($i++ != 35): ?>
+                <div class="card mb-1">
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      <i class="fas fa-chart-pie mr-1"></i>
+                      component
+                    </h3>
+                  </div>
+                </div>
+              <?php endwhile; ?>
             </section>
 
             <section class="col-lg-9">
               <div class="container-fluid" id="dashboard-container">
-                
+
+              </div>
+              <div class="container-fluid d-flex justify-content-center mt-5">
+                <button type="button" class="btn btn-primary btn-sm mx-1 btn-block" onclick="addRow()">
+                  <i class="fas fa-plus"></i>
+                  Add Row
+                </button>
               </div>
             </section>
 
-          </div>
-          <div class="row my-3">
-            <div class="col d-flex justify-content-center">
-              <button type="button" class="btn btn-primary btn-sm mx-1 btn-block" onclick="addRow()">
-                <i class="fas fa-plus"></i>
-                Add Row
-              </button>
-            </div>
           </div>
         </div>
       </section>
@@ -122,19 +135,25 @@
   <script src="plugins/jquery/jquery.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
   <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- JQuery punch (finger) touch for mobiles -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha512-0bEtK0USNd96MnO4XhH8jhv3nyRF0eK87pJke6pkYf3cM0uDIhNJy9ltuzqgypoIFXw3JSuiy04tVk4AjpZdZw==" crossorigin="anonymous"></script>
   <!-- Bootstrap 4 -->
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="dist/js/adminlte.min.js"></script>
   <script>
     let totalRows = 0;
+    init();
     function init() {
       $('.connectedSortable').sortable({
-        placeholder: 'sort-highlight',
         connectWith: '.connectedSortable',
-        handle: '.card-header, .nav-tabs',
+        cursor:"move",
+        scroll:false,
+        // handle: '.card-header, .nav-tabs',
+        placeholder: 'sort-highlight',
         forcePlaceholderSize: true,
-        zIndex: 999999
+        zIndex: 999999,
+        cursorAt:{right:50,top:3},
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
     }
@@ -188,12 +207,12 @@
           ${selectColumns}
         </div>
     `);
-    totalRows++;
+      totalRows++;
     }
 
-    function addColumnOnRow(rowId,columns){
+    function addColumnOnRow(rowId, columns) {
       let cols = ``;
-      columns.forEach(function(col,index){
+      columns.forEach(function (col, index) {
         cols += `<div class="connectedSortable col-md-${col}"></div>`;
       });
       let row = $(`#row-${rowId}`);
@@ -204,4 +223,5 @@
     }
   </script>
 </body>
+
 </html>
