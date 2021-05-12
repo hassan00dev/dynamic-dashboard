@@ -1,6 +1,13 @@
 <?php
 include_once('connection/connect.php');
 $query = mysqli_query($conn,"SELECT * FROM components");
+
+if (isset($_GET['id'])) {
+  $dashboard_id = $_GET['id'];
+} else {
+  header('location:index.php');
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,7 +133,7 @@ $query = mysqli_query($conn,"SELECT * FROM components");
               <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active pt-2 connectedSortable" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                   <?php while ($component = mysqli_fetch_array($query)) : ?>
-                    <div class="card mb-1">
+                    <div class="card mb-1" data-component-id="<?= $component['id'] ?>">
                       <div class="card-header">
                         <h3 class="card-title">
                           <i class="<?= $component['icon'] ?> mr-1"></i>
@@ -187,6 +194,24 @@ $query = mysqli_query($conn,"SELECT * FROM components");
           right: 50,
           top: 3
         },
+        stop:function(event,ui){
+          let rowPosition = ui.item.parents('div.row').attr('data-row-position');
+          let cols = ui.item.parents('div.row').attr('data-columns');
+          let col = ui.item.parents('div[data-col]').attr('data-col');
+          let componentId = ui.item.attr('data-component-id');
+          let data = {rowPosition,cols,col,componentId,dashboardId:"<?= $dashboard_id ?>"};
+          $.ajax({
+            method:"post",
+            url:"<?= APP_URL ?>/ajax/editDashboard.php",
+            data:data,
+            success:function(response,textStatus,xhr){
+              alert("saved");
+            },
+            error:function(err){
+              alert("Something went wrong!");
+            }
+          });
+        }
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
     }
@@ -240,20 +265,58 @@ $query = mysqli_query($conn,"SELECT * FROM components");
           ${selectColumns}
         </div>
     `);
-      totalRows++;
+      return totalRows++;
     }
 
-    function addColumnOnRow(rowId, columns) {
+    function addColumnOnRow(rowId, columns ,components = null) {
       let cols = ``;
       columns.forEach(function(col, index) {
-        cols += `<div class="connectedSortable col-md-${col}"></div>`;
+        let content = '';
+        if(components != null){
+          let componentId = components[index];
+          let div = $(`div[data-component-id="${componentId}"]`);
+          let card = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
+          div.remove();
+          content = card;
+        }
+        cols += `<div class="connectedSortable col-md-${col}" data-col="${col}">${content}</div>`;
       });
       let row = $(`#row-${rowId}`);
+      row.attr('data-row-position',rowId);
+      row.attr('data-columns',columns);
       row.html(cols);
       row.addClass('col-row-height');
-      console.log(cols);
       init();
     }
+
+    function fetch_dashboard_data(){
+      let data = {
+        dashboardId:"<?= $dashboard_id ?>",
+      };
+      $.ajax({
+        method:"post",
+        url:"<?= APP_URL ?>/ajax/fetchDashboard.php",
+        dataType:'json',
+        data:data,
+        success:function(response,textStatus,xhr){
+          // console.log(response);
+          Object.keys(response.rows).forEach(rowPosition => {
+            let rowId = addRow();
+            let row = response.rows[rowPosition];
+            let cols = row.cols;
+            let positions = row.positions;
+            let components = Object.values(row.componentIds); // also not changing order
+
+            addColumnOnRow(rowId, Object.values(cols),components);
+          });
+        },
+        error:function(err){
+          alert("Fetch Dashboard Failed!");
+          console.log(err);
+        }
+      });
+    }
+    fetch_dashboard_data();
   </script>
 </body>
 

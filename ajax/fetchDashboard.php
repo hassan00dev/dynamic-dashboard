@@ -1,6 +1,10 @@
 <?php 
 include_once('../connection/connect.php');
 
+// required headers
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+
 $dashboard_id = $_POST['dashboardId'];
 
 $dashboard_detail = mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM `dashboards` WHERE id = '$dashboard_id'"));
@@ -14,10 +18,13 @@ function fetch_rows() {
     while($row = mysqli_fetch_assoc($query)){
         $row_position = $row['row_position'];
         $q = mysqli_query($conn,"SELECT * FROM columns WHERE dashboard_id = '$dashboard_id' AND row_position = '$row_position';");
+        $index = 0;
         while($col = mysqli_fetch_assoc($q)){
-            $responseData[$row['row_position']]['cols'][] = $col['column'];
-            $responseData[$row['row_position']]['positions'][] = $col['col_position'];
-            $responseData[$row['row_position']]['componentIds'][] = $col['component_id'];
+            $responseData[$row['row_position']]['cols']['index'.$index] = $col['column'];
+            $responseData[$row['row_position']]['positions']['index'.$index] = $col['col_position'];
+            $responseData[$row['row_position']]['componentIds']['index'.$index] = $col['component_id'];
+
+            $index++;
         }
     }
 
@@ -32,4 +39,4 @@ $data = [
     'rows' => fetch_rows()
 ];
 
-print_r($data);
+echo json_encode($data);

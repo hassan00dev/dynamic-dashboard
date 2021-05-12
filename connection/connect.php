@@ -1,6 +1,6 @@
 <?php
 define('APP_NAME','DragDrop Application');
-define('APP_URL','http://localhost/dragdrop-adminlte/');
+define('APP_URL','http://localhost/dragdrop-adminlte');
 
 $conn = mysqli_connect('localhost','root','','drapdrop-adminlte');
 
