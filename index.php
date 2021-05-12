@@ -51,6 +51,21 @@
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
     }
+
+    .content-header {
+      height: 70px;
+    }
+
+    .component-sidebar {
+      height: calc(100vh - 70px);
+      margin-top: -16px;
+      overflow: hidden;
+      overflow-y: scroll;
+    }
+
+    .nav-tabs .nav-link.active {
+      background-color: #f5f5f5;
+    }
   </style>
 </head>
 
@@ -88,26 +103,45 @@
 
           <div class="row mt-3">
 
-            <section class="col-lg-3 connectedSortable" style="height:90vh;overflow:hidden;overflow-y:scroll;">
-
-              <div class="card mb-1">
-                <div class="card-header">
-                  <h3 class="card-title">
-                    <i class="fas fa-chart-pie mr-1"></i>
-                    Sales
-                  </h3>
-                </div>
-              </div>
-              <?php $i=0; while($i++ != 35): ?>
-                <div class="card mb-1">
-                  <div class="card-header">
-                    <h3 class="card-title">
-                      <i class="fas fa-chart-pie mr-1"></i>
-                      component
-                    </h3>
+            <section class="col-lg-3 component-sidebar">
+              <nav>
+                <div class="nav nav-tabs justify-content-between" id="nav-tab" role="tablist">
+                  <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                    <i class="fas fa-cogs"></i> Components
+                  </a>
+                  <a class="nav-link dropdown-toggle" href="javascript::void(0);" id="dropdownMenuButton" data-toggle="dropdown">
+                    <i class="fas fa-list"></i>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
                   </div>
                 </div>
-              <?php endwhile; ?>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active pt-2 connectedSortable" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                  <div class="card mb-1">
+                    <div class="card-header">
+                      <h3 class="card-title">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        Sales
+                      </h3>
+                    </div>
+                  </div>
+                  <?php $i = 0;
+                  while ($i++ != 35) : ?>
+                    <div class="card mb-1">
+                      <div class="card-header">
+                        <h3 class="card-title">
+                          <i class="fas fa-chart-pie mr-1"></i>
+                          component
+                        </h3>
+                      </div>
+                    </div>
+                  <?php endwhile; ?>
+                </div>
+              </div>
             </section>
 
             <section class="col-lg-9">
@@ -144,16 +178,20 @@
   <script>
     let totalRows = 0;
     init();
+
     function init() {
       $('.connectedSortable').sortable({
         connectWith: '.connectedSortable',
-        cursor:"move",
-        scroll:false,
+        cursor: "move",
+        scroll: false,
         // handle: '.card-header, .nav-tabs',
         placeholder: 'sort-highlight',
         forcePlaceholderSize: true,
         zIndex: 999999,
-        cursorAt:{right:50,top:3},
+        cursorAt: {
+          right: 50,
+          top: 3
+        },
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
     }
@@ -212,7 +250,7 @@
 
     function addColumnOnRow(rowId, columns) {
       let cols = ``;
-      columns.forEach(function (col, index) {
+      columns.forEach(function(col, index) {
         cols += `<div class="connectedSortable col-md-${col}"></div>`;
       });
       let row = $(`#row-${rowId}`);
