@@ -269,22 +269,17 @@ if (isset($_GET['id'])) {
       return totalRows++;
     }
 
-    function addColumnOnRow(rowId, columns ,components = null) {
+    function addColumnOnRow(rowId, columns, dbRow = null) {
       let cols = ``;
-      let sum  = columns.reduce(function(sum,currentVal){
-        return sum + currentVal;
-      });
-      if(sum != 12){
-        let remaining = 12 - sum;
-        columns.push(remaining);
-      }
+      console.log(dbRow);
       columns.forEach(function(col, index) {
         let content = '';
-        if(components != null){
-          let componentId = components[index];
-          if(componentId == undefined){
-            content = "";
-          }else{
+        if(dbRow != null){
+          let pos = dbRow['positions'].findIndex(function(v){
+            return v == index;
+          });
+          if(pos >= 0){
+            let componentId = dbRow['componentIds'][pos];
             let div = $(`div[data-component-id="${componentId}"]`);
             let card = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
             div.remove();
@@ -312,15 +307,13 @@ if (isset($_GET['id'])) {
         dataType:'json',
         data:data,
         success:function(response,textStatus,xhr){
-          // console.log(response);
+          console.log(response);
           Object.keys(response.rows).forEach(rowPosition => {
             let rowId = addRow();
             let row = response.rows[rowPosition];
-            let cols = row.cols;
-            let positions = row.positions;
-            let components = Object.values(row.componentIds); // also not changing order
+            let pattern = row.pattern;
 
-            addColumnOnRow(rowId, Object.values(cols),components);
+            addColumnOnRow(rowId,pattern,row);
           });
         },
         error:function(err){
@@ -338,15 +331,16 @@ if (isset($_GET['id'])) {
         let rowPosition = val.parentNode.getAttribute('data-row-position');
         let cols = val.parentNode.getAttribute('data-columns');
         let col = val.getAttribute('data-col');
+        let colPosition = val.getAttribute('data-col-position');
         let componentId = val.childNodes[0];
-
+        
         if(componentId){
           componentId = componentId.getAttribute('data-component-id');
         }else{
           componentId = null;
         }
         
-        let component = {rowPosition,cols,col,componentId,dashboardId:"<?= $dashboard_id ?>"};
+        let component = {rowPosition,cols,col,colPosition,componentId,dashboardId:"<?= $dashboard_id ?>"};
         data.push(component);
       }); 
       
@@ -364,7 +358,7 @@ if (isset($_GET['id'])) {
           alert("Something went wrong!");
         }
       });
-      console.log(data);
+      // console.log(data);
     }
 
     function deleteRow(id){

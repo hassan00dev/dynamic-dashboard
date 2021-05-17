@@ -20,9 +20,10 @@ function fetch_rows() {
         $q = mysqli_query($conn,"SELECT * FROM columns WHERE dashboard_id = '$dashboard_id' AND row_position = '$row_position';");
         $index = 0;
         while($col = mysqli_fetch_assoc($q)){
-            $responseData[$row['row_position']]['cols']['index'.$index] = $col['column'];
-            $responseData[$row['row_position']]['positions']['index'.$index] = $col['col_position'];
-            $responseData[$row['row_position']]['componentIds']['index'.$index] = $col['component_id'];
+            $responseData[$row_position]['pattern'] = explode(',',$row['pattern']);
+            $responseData[$row_position]['cols'][$index] = $col['column'];
+            $responseData[$row_position]['positions'][$index] = $col['col_position'];
+            $responseData[$row_position]['componentIds'][$index] = $col['component_id'];
 
             $index++;
         }
