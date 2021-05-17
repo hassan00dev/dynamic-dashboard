@@ -147,6 +147,11 @@ if (isset($_GET['id'])) {
             </section>
 
             <section class="col-lg-9">
+              <div class="container px-4 mb-3">
+                <div class="row justify-content-end">
+                      <button type="button" class="btn btn-primary" onclick="saveDashboard()">Save</button>
+                </div>
+              </div>
               <div class="container-fluid" id="dashboard-container">
 
               </div>
@@ -193,24 +198,6 @@ if (isset($_GET['id'])) {
         cursorAt: {
           right: 50,
           top: 3
-        },
-        stop:function(event,ui){
-          let rowPosition = ui.item.parents('div.row').attr('data-row-position');
-          let cols = ui.item.parents('div.row').attr('data-columns');
-          let col = ui.item.parents('div[data-col]').attr('data-col');
-          let componentId = ui.item.attr('data-component-id');
-          let data = {rowPosition,cols,col,componentId,dashboardId:"<?= $dashboard_id ?>"};
-          $.ajax({
-            method:"post",
-            url:"<?= APP_URL ?>/ajax/editDashboard.php",
-            data:data,
-            success:function(response,textStatus,xhr){
-              alert("saved");
-            },
-            error:function(err){
-              alert("Something went wrong!");
-            }
-          });
         }
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
@@ -270,14 +257,25 @@ if (isset($_GET['id'])) {
 
     function addColumnOnRow(rowId, columns ,components = null) {
       let cols = ``;
+      let sum  = columns.reduce(function(sum,currentVal){
+        return sum + currentVal;
+      });
+      if(sum != 12){
+        let remaining = 12 - sum;
+        columns.push(remaining);
+      }
       columns.forEach(function(col, index) {
         let content = '';
         if(components != null){
           let componentId = components[index];
-          let div = $(`div[data-component-id="${componentId}"]`);
-          let card = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
-          div.remove();
-          content = card;
+          if(componentId == undefined){
+            content = "";
+          }else{
+            let div = $(`div[data-component-id="${componentId}"]`);
+            let card = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
+            div.remove();
+            content = card;
+          }
         }
         cols += `<div class="connectedSortable col-md-${col}" data-col="${col}">${content}</div>`;
       });
@@ -317,6 +315,42 @@ if (isset($_GET['id'])) {
       });
     }
     fetch_dashboard_data();
+
+    saveDashboard = () => {
+      let data = [];
+      let selectors = document.querySelectorAll('.connectedSortable[data-col]');
+      selectors.forEach(function(val,index,array){
+        let rowPosition = val.parentNode.getAttribute('data-row-position');
+        let cols = val.parentNode.getAttribute('data-columns');
+        let col = val.getAttribute('data-col');
+        let componentId = val.childNodes[0];
+
+        if(componentId){
+          componentId = componentId.getAttribute('data-component-id');
+        }else{
+          componentId = null;
+        }
+        
+        let component = {rowPosition,cols,col,componentId,dashboardId:"<?= $dashboard_id ?>"};
+        data.push(component);
+      }); 
+      
+      /**
+       * Send Post Request
+       */
+      $.ajax({
+        method:"post",
+        url:"<?= APP_URL ?>/ajax/editDashboard.php",
+        data:{data:data},
+        success:function(response,textStatus,xhr){
+          alert("saved");
+        },
+        error:function(err){
+          alert("Something went wrong!");
+        }
+      });
+      console.log(data);
+    }
   </script>
 </body>
 
