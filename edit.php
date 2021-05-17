@@ -33,6 +33,7 @@ if (isset($_GET['id'])) {
 
     .col-row-height {
       height: 60px;
+      position: relative;
     }
 
     .col-row {
@@ -76,6 +77,19 @@ if (isset($_GET['id'])) {
 
     .nav-tabs .nav-link.active {
       background-color: #f5f5f5;
+    }
+
+    .remove-row{
+      z-index: 99999;
+      font-size: 14px;
+      cursor: pointer;
+      position: absolute;
+      border-radius:10px;
+      top: -8px;
+      right: -8px;
+    }
+    .remove-row:hover{
+      background-color: #ff0000;
     }
   </style>
 </head>
@@ -277,8 +291,9 @@ if (isset($_GET['id'])) {
             content = card;
           }
         }
-        cols += `<div class="connectedSortable col-md-${col}" data-col="${col}">${content}</div>`;
+        cols += `<div class="connectedSortable col-md-${col}" data-col="${col}" data-col-position="${index}">${content}</div>`;
       });
+      cols += `<div class="badge badge-danger remove-row" onclick="deleteRow(${rowId})">X</div>`;
       let row = $(`#row-${rowId}`);
       row.attr('data-row-position',rowId);
       row.attr('data-columns',columns);
@@ -350,6 +365,15 @@ if (isset($_GET['id'])) {
         }
       });
       console.log(data);
+    }
+
+    function deleteRow(id){
+      let components = document.querySelectorAll(`#row-${id} .ui-sortable-handle`);
+      if(components.length != 0){
+        alert("Please Empty the Row!");
+        return void(0);
+      }
+      $("#row-"+id).remove();
     }
   </script>
 </body>
