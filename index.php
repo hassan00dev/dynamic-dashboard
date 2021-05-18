@@ -147,7 +147,11 @@ if (isset($_GET['id'])) {
                                                 $d_q = mysqli_query($conn, "SELECT * FROM dashboards;");
                                                 while ($d_r = mysqli_fetch_array($d_q)) {
                                                 ?>
-                                                    <a class="dropdown-item" href="index.php?id=<?= $d_r['id'] ?>"><?= $d_r['name'] ?></a>
+                                                    <a class="dropdown-item <?php
+                                                        if($d_r['id'] == $dashboard_id){
+                                                            echo 'active';
+                                                        }
+                                                    ?>" href="index.php?id=<?= $d_r['id'] ?>"><?= $d_r['name'] ?></a>
                                                 <?php
                                                 }
                                                 ?>
