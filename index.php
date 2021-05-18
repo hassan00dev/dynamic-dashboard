@@ -151,7 +151,7 @@ if (isset($_GET['id'])) {
                                                         if($d_r['id'] == $dashboard_id){
                                                             echo 'active';
                                                         }
-                                                    ?>" href="index.php?id=<?= $d_r['id'] ?>"><?= $d_r['name'] ?></a>
+                                                    ?>" href="index.php?id=<?= $d_r['id'] ?>"><i class="fas fa-circle" style="color:<?= $d_r['color'] ?>"></i> <?= $d_r['name'] ?></a>
                                                 <?php
                                                 }
                                                 ?>
