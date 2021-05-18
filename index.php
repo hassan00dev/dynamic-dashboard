@@ -135,7 +135,29 @@ if (isset($_GET['id'])) {
                         </section>
 
                         <section class="col-lg-9">
-                            <div class="container-fluid mt-5">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-tachometer-alt"></i> Dashboards
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <?php
+                                                    $d_q = mysqli_query($conn,"SELECT * FROM dashboards;");
+                                                    while($d_r = mysqli_fetch_array($d_q)){
+                                                        ?>
+                                                        <a class="dropdown-item" href="index.php?id=<?= $d_r['id'] ?>"><?= $d_r['name'] ?></a>
+                                                        <?php
+                                                    }
+                                                ?>
+                                                <a class="dropdown-item" href="createDashboard.php"><i class="fas fa-plus-circle"></i> Add Dashboard</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid">
                                 <?php
                                 $query = mysqli_query($conn, "SELECT * FROM architectures WHERE dashboard_id = '$dashboard_id'  ORDER BY row_position ASC");
                                 while ($row = mysqli_fetch_array($query)) {
