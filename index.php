@@ -136,22 +136,33 @@ if (isset($_GET['id'])) {
 
                         <section class="col-lg-9">
                             <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-3">
+                                <div class="row mb-2">
+                                    <div class="col-md-3 d-flex justify-content-between">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-tachometer-alt"></i> Dashboards
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <?php
-                                                    $d_q = mysqli_query($conn,"SELECT * FROM dashboards;");
-                                                    while($d_r = mysqli_fetch_array($d_q)){
-                                                        ?>
-                                                        <a class="dropdown-item" href="index.php?id=<?= $d_r['id'] ?>"><?= $d_r['name'] ?></a>
-                                                        <?php
-                                                    }
+                                                $d_q = mysqli_query($conn, "SELECT * FROM dashboards;");
+                                                while ($d_r = mysqli_fetch_array($d_q)) {
+                                                ?>
+                                                    <a class="dropdown-item" href="index.php?id=<?= $d_r['id'] ?>"><?= $d_r['name'] ?></a>
+                                                <?php
+                                                }
                                                 ?>
                                                 <a class="dropdown-item" href="createDashboard.php"><i class="fas fa-plus-circle"></i> Add Dashboard</a>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="edit.php?id=<?= $dashboard_id ?>"><i class="fas fa-edit text-primary"></i> Edit Dashboard</a>
+                                                <?php if ($dashboard_id != 1) : ?>
+                                                    <a class="dropdown-item" href="javascript::void(0)" onclick="deleteDashboard('queries/deleteDashboard.php?id=<?= $dashboard_id ?>')"><i class="fas fa-trash text-danger"></i> Delete Dashboard</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -218,6 +229,26 @@ if (isset($_GET['id'])) {
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
+    <!-- sweetalert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- custom js -->
+    <script>
+        function deleteDashboard(url) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.replace(url);
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>
