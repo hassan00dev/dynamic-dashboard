@@ -2,9 +2,16 @@
 include_once('../connection/connect.php');
 
 $data = $_POST['data'];
+$dashboard = $_POST['dashboard'];
+
 $id = $data[0]['dashboardId'];
 
-// print_r($data);
+$name = $dashboard['name'];
+$color = $dashboard['color'];
+mysqli_query($conn,"UPDATE `dashboards` SET 
+`name`='$name',
+`color`='$color'
+ WHERE id = '$id'");
 
 // delete all rows
 mysqli_query($conn,"DELETE FROM `architectures` WHERE dashboard_id = '$id';");

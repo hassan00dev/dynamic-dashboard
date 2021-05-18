@@ -8,6 +8,8 @@ if (isset($_GET['id'])) {
   header('location:index.php');
 }
 
+$dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboards WHERE id = '$dashboard_id';"));
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +24,8 @@ if (isset($_GET['id'])) {
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- sweetalert2 -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     /* .add-row-height {
       height: 60px;
@@ -164,6 +168,17 @@ if (isset($_GET['id'])) {
               <div class="container px-4 mb-3">
                 <div class="row justify-content-end">
                       <button type="button" class="btn btn-primary" onclick="saveDashboard()">Save</button>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-md-9">
+                      <label>Title</label>
+                      <input type="text" class="form-control" id="dashboard-title" value="<?= $dashboard_detail['name'] ?>">
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label>Color</label>
+                      <input type="color" class="form-control" id="dashboard-color" value="<?= $dashboard_detail['color'] ?>">
+                    </div>
                 </div>
               </div>
               <div class="container-fluid" id="dashboard-container">
@@ -325,6 +340,21 @@ if (isset($_GET['id'])) {
     fetch_dashboard_data();
 
     saveDashboard = () => {
+
+      if($("#dashboard-title").val() == ""){
+        Swal.fire({
+          icon:"warning",
+          title:"Empty!",
+          text:"Please Enter Dashboard Title and Color"
+        });
+        return void(0);
+      }
+
+      let dashboardDetail = {
+        name:$("#dashboard-title").val(),
+        color:$("#dashboard-color").val()
+      };
+
       let data = [];
       let selectors = document.querySelectorAll('.connectedSortable[data-col]');
       selectors.forEach(function(val,index,array){
@@ -350,7 +380,7 @@ if (isset($_GET['id'])) {
       $.ajax({
         method:"post",
         url:"<?= APP_URL ?>/ajax/editDashboard.php",
-        data:{data:data},
+        data:{data:data,dashboard:dashboardDetail},
         success:function(response,textStatus,xhr){
           alert("saved");
         },
