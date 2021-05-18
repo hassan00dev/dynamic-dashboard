@@ -113,7 +113,7 @@ if (isset($_GET['id'])) {
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="edit.php">Dashboard</a></li>
                 <li class="breadcrumb-item active">Edit</a></li>
               </ol>
             </div><!-- /.col -->
