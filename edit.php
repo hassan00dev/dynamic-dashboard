@@ -1,5 +1,10 @@
 <?php
 include_once('connection/connect.php');
+
+if(!isset($_SESSION['auth'])){
+    header('location:auth/login.php');
+}
+
 $query = mysqli_query($conn,"SELECT * FROM components");
 
 if (isset($_GET['id'])) {
