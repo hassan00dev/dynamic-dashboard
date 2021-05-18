@@ -7,7 +7,6 @@ if (isset($_GET['id'])) {
     $dashboard_id = 1;
 }
 
-$query = mysqli_query($conn, "SELECT * FROM components");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -130,17 +129,7 @@ $query = mysqli_query($conn, "SELECT * FROM components");
                                 </div>
                             </nav>
                             <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active pt-2 connectedSortable" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                    <?php while ($component = mysqli_fetch_array($query)) : ?>
-                                        <div class="card mb-1">
-                                            <div class="card-header">
-                                                <h3 class="card-title">
-                                                    <i class="<?= $component['icon'] ?> mr-1"></i>
-                                                    <?= $component['title'] ?>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    <?php endwhile; ?>
+                                <div class="tab-pane fade show active pt-2" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                 </div>
                             </div>
                         </section>
