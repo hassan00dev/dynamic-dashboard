@@ -332,7 +332,11 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
           });
         },
         error:function(err){
-          alert("Fetch Dashboard Failed!");
+          Swal.fire({
+            icon:"error",
+            title:"Internal Server Error!",
+            text:"Fetching dashboard detail failed!"
+          });
           console.log(err);
         }
       });
@@ -382,10 +386,18 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
         url:"<?= APP_URL ?>/ajax/editDashboard.php",
         data:{data:data,dashboard:dashboardDetail},
         success:function(response,textStatus,xhr){
-          alert("saved");
+          Swal.fire({
+            icon:"success",
+            title:"Dashboard Updated!",
+            text:"Dashboard Updated Successfully."
+          });
         },
         error:function(err){
-          alert("Something went wrong!");
+          Swal.fire({
+            icon:"error",
+            title:"Internal Server Error!",
+            text:"Something Went Wrong!"
+          });
         }
       });
       // console.log(data);
@@ -394,7 +406,10 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
     function deleteRow(id){
       let components = document.querySelectorAll(`#row-${id} .ui-sortable-handle`);
       if(components.length != 0){
-        alert("Please Empty the Row!");
+          Swal.fire({
+            icon:"warning",
+            title:"Please Empty Row First!"
+          });
         return void(0);
       }
       $("#row-"+id).remove();
