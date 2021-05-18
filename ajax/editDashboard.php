@@ -15,7 +15,7 @@ foreach($data as $row){
     $row_position = $row['rowPosition'];
     $cols_in_row = $row['cols'];
     $col = $row['col'];
-    echo $col_position = $row['colPosition'];echo '<br>';
+    $col_position = $row['colPosition'];
     $component_id = $row['componentId'];
     
     if(mysqli_num_rows(mysqli_query($conn,"SELECT * FROM `architectures` WHERE row_position = '$row_position' AND dashboard_id = '$dashboard_id';")) == 0){
