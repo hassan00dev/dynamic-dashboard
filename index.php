@@ -161,7 +161,7 @@ if (isset($_GET['id'])) {
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="edit.php?id=<?= $dashboard_id ?>"><i class="fas fa-edit text-primary"></i> Edit Dashboard</a>
                                                 <?php if ($dashboard_id != 1) : ?>
-                                                    <a class="dropdown-item" href="javascript::void(0)" onclick="deleteDashboard('queries/deleteDashboard.php?id=<?= $dashboard_id ?>')"><i class="fas fa-trash text-danger"></i> Delete Dashboard</a>
+                                                    <a class="dropdown-item" href="javascript:void(0)" onclick="deleteDashboard('queries/deleteDashboard.php?id=<?= $dashboard_id ?>')"><i class="fas fa-trash text-danger"></i> Delete Dashboard</a>
                                                 <?php endif; ?>
                                             </div>
                                         </div>

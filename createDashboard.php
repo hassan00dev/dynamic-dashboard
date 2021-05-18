@@ -130,7 +130,7 @@ $query = mysqli_query($conn,"SELECT * FROM components");
                   <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
                     <i class="fas fa-cogs"></i> Components
                   </a>
-                  <a class="nav-link dropdown-toggle" href="javascript::void(0);" id="dropdownMenuButton" data-toggle="dropdown">
+                  <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="dropdownMenuButton" data-toggle="dropdown">
                     <i class="fas fa-list"></i>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
