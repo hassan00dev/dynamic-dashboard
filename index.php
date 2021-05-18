@@ -99,8 +99,7 @@ $query = mysqli_query($conn, "SELECT * FROM components");
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Edit</a></li>
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -149,29 +148,37 @@ $query = mysqli_query($conn, "SELECT * FROM components");
                         <section class="col-lg-9">
                             <div class="container-fluid mt-5">
                                 <?php
-                                    $query = mysqli_query($conn, "SELECT * FROM architectures JOIN dashboards ON architectures.dashboard_id = dashboards.id  ORDER BY row_position ASC");
-                                    while ($row = mysqli_fetch_array($query)) {
+                                $query = mysqli_query($conn, "SELECT * FROM architectures WHERE dashboard_id = '$dashboard_id'  ORDER BY row_position ASC");
+                                while ($row = mysqli_fetch_array($query)) {
                                 ?>
                                     <div class="row">
                                         <?php
-                                            $row_position = $row['row_position'];
-                                            $col_query = mysqli_query($conn,"SELECT * FROM `columns` WHERE dashboard_id = '$dashboard_id' && row_position = '$row_position'");
-                                        while($col = mysqli_fetch_array($col_query)){
-                                            $component_id = $col['component_id'];
-                                            $component_query = mysqli_query($conn,"SELECT * FROM components WHERE id = '$component_id'");
-                                            $component = mysqli_fetch_array($component_query);
+                                        $pattern = explode(',', $row['pattern']);
+                                        $row_position = $row['row_position'];
+                                        foreach ($pattern as $col_position => $col) {
+                                            $col_query = mysqli_query($conn, "SELECT * FROM `columns` WHERE dashboard_id = '$dashboard_id' && row_position = '$row_position' && col_position = '$col_position';");
+                                            if (mysqli_num_rows($col_query) > 0) {
+                                                $col_record = mysqli_fetch_array($col_query);
+                                                $component_id = $col_record['component_id'];
+                                                $component_query = mysqli_query($conn, "SELECT * FROM components WHERE id = '$component_id'");
+                                                $component = mysqli_fetch_array($component_query);
                                         ?>
-                                            <div class="col-md-<?= $col['column'] ?>">
-                                                <div class="card mb-1">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">
-                                                            <i class="<?= $component['icon'] ?> mr-1"></i>
-                                                            <?= $component['title'] ?>
-                                                        </h3>
+                                                <div class="col-md-<?= $col_record['column'] ?>">
+                                                    <div class="card mb-1">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">
+                                                                <i class="<?= $component['icon'] ?> mr-1"></i>
+                                                                <?= $component['title'] ?>
+                                                            </h3>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <div class="col-md-<?= $col ?>"></div>
                                         <?php
+                                            }
                                         }
                                         ?>
                                     </div>
