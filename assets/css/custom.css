@@ -1,0 +1,15 @@
+
+.content-header {
+    height: 70px;
+}
+
+.component-sidebar {
+    height: calc(100vh - 70px);
+    margin-top: -16px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #f5f5f5;
+}

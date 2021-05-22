@@ -1,0 +1,59 @@
+.row-border {
+  border: 2px dashed #007bff;
+  border-radius: 5px;
+}
+
+.col-row-height {
+  min-height: 60px;
+  position: relative;
+}
+
+.col-row {
+  height: 30px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+.col-row:hover {
+  background-color: #eaedf1;
+}
+
+.col-text {
+  font-size: 20px;
+}
+
+.col-border {
+  border: 1px solid grey;
+}
+
+.col-border-radius-start {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.col-border-radius-end {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.remove-row,.remove-col{
+  z-index: 5;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+  border-radius:10px;
+}
+.remove-col{
+  top: -8px;
+  right: -8px;
+}
+.remove-row{
+  top: -8px;
+  left: -8px;
+}
+.remove-row:hover,.remove-col:hover{
+  background-color: #ff0000;
+}
+.connectedSortable{
+  min-height:50px;
+}

@@ -26,85 +26,9 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- sweetalert2 -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    /* .add-row-height {
-      height: 60px;
-    } */
-    .row-border {
-      border: 2px dashed #007bff;
-      border-radius: 5px;
-    }
-
-    .col-row-height {
-      min-height: 60px;
-      position: relative;
-    }
-
-    .col-row {
-      height: 30px;
-      margin-top: 7px;
-      margin-bottom: 7px;
-    }
-
-    .col-row:hover {
-      background-color: #eaedf1;
-    }
-
-    .col-text {
-      font-size: 20px;
-    }
-
-    .col-border {
-      border: 1px solid grey;
-    }
-
-    .col-border-radius-start {
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-
-    .col-border-radius-end {
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-
-    .content-header {
-      height: 70px;
-    }
-
-    .component-sidebar {
-      height: calc(100vh - 70px);
-      margin-top: -16px;
-      overflow: hidden;
-      overflow-y: scroll;
-    }
-
-    .nav-tabs .nav-link.active {
-      background-color: #f5f5f5;
-    }
-
-    .remove-row,.remove-col{
-      z-index: 5;
-      font-size: 14px;
-      cursor: pointer;
-      position: absolute;
-      border-radius:10px;
-    }
-    .remove-col{
-      top: -8px;
-      right: -8px;
-    }
-    .remove-row{
-      top: -8px;
-      left: -8px;
-    }
-    .remove-row:hover,.remove-col:hover{
-      background-color: #ff0000;
-    }
-    .connectedSortable{
-      min-height:50px;
-    }
-  </style>
+  <!-- custom css -->
+  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel="stylesheet" href="assets/css/dragdrop.css" >
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
