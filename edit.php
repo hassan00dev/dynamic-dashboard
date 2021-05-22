@@ -84,7 +84,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
     }
 
     .remove-row,.remove-col{
-      z-index: 99999;
+      z-index: 5;
       font-size: 14px;
       cursor: pointer;
       position: absolute;

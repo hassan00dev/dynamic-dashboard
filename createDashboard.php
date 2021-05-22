@@ -28,7 +28,7 @@ $query = mysqli_query($conn,"SELECT * FROM components");
     }
 
     .col-row-height {
-      height: 60px;
+      min-height: 60px;
       position: relative;
     }
 
@@ -75,17 +75,26 @@ $query = mysqli_query($conn,"SELECT * FROM components");
       background-color: #f5f5f5;
     }
 
-    .remove-row{
-      z-index: 99999;
+    .remove-row,.remove-col{
+      z-index: 5;
       font-size: 14px;
       cursor: pointer;
       position: absolute;
       border-radius:10px;
+    }
+    .remove-col{
       top: -8px;
       right: -8px;
     }
-    .remove-row:hover{
+    .remove-row{
+      top: -8px;
+      left: -8px;
+    }
+    .remove-row:hover,.remove-col:hover{
       background-color: #ff0000;
+    }
+    .connectedSortable{
+      min-height:50px;
     }
   </style>
 </head>
@@ -109,8 +118,8 @@ $query = mysqli_query($conn,"SELECT * FROM components");
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                <li class="breadcrumb-item active">New</a></li>
+                <li class="breadcrumb-item"><a href="edit.php">Dashboard</a></li>
+                <li class="breadcrumb-item active">Edit</a></li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -157,11 +166,11 @@ $query = mysqli_query($conn,"SELECT * FROM components");
             </section>
 
             <section class="col-lg-9">
-              
               <div class="container px-4 mb-3">
                 <div class="row justify-content-end">
                       <button type="button" class="btn btn-primary" onclick="saveDashboard()">Save</button>
                 </div>
+                
                 <div class="row">
                     <div class="form-group col-md-9">
                       <label>Title</label>
@@ -219,6 +228,9 @@ $query = mysqli_query($conn,"SELECT * FROM components");
         cursorAt: {
           right: 50,
           top: 3
+        },
+        remove: function (event, ui) {
+            ui.item.clone().appendTo('#nav-home');
         }
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
@@ -279,7 +291,8 @@ $query = mysqli_query($conn,"SELECT * FROM components");
     function addColumnOnRow(rowId, columns) {
       let cols = ``;
       columns.forEach(function(col, index) {
-        cols += `<div class="connectedSortable col-md-${col}" data-col="${col}" data-col-position="${index}"></div>`;
+        let content = '';
+        cols += `<div class="connectedSortable col-md-${col}" data-col="${col}" data-col-position="${index}">${content}</div>`;
       });
       cols += `<div class="badge badge-danger remove-row" onclick="deleteRow(${rowId})">X</div>`;
       let row = $(`#row-${rowId}`);
@@ -291,7 +304,6 @@ $query = mysqli_query($conn,"SELECT * FROM components");
     }
 
     saveDashboard = () => {
-      let data = [];
 
       if($("#dashboard-title").val() == ""){
         Swal.fire({
@@ -307,11 +319,13 @@ $query = mysqli_query($conn,"SELECT * FROM components");
         color:$("#dashboard-color").val()
       };
 
+      let data = [];
       let selectors = document.querySelectorAll('.connectedSortable[data-col]');
       selectors.forEach(function(val,index,array){
         let rowPosition = val.parentNode.getAttribute('data-row-position');
         let cols = val.parentNode.getAttribute('data-columns');
         let col = val.getAttribute('data-col');
+
         let colPosition = val.getAttribute('data-col-position');
         let componentId = val.childNodes[0];
         
@@ -321,7 +335,17 @@ $query = mysqli_query($conn,"SELECT * FROM components");
           componentId = null;
         }
         
-        let component = {rowPosition,cols,col,colPosition,componentId};
+        let vColPosition = [];
+        if(val.childElementCount > 0){
+          componentId = [];
+          for(let i = 0;i<val.childElementCount;i++){
+            let child = val.children[i];
+            componentId.push(child.getAttribute('data-component-id'));
+            vColPosition.push(i);
+          }
+        }
+
+        let component = {rowPosition,cols,col,colPosition,vColPosition,componentId};
         data.push(component);
       }); 
       
@@ -335,8 +359,8 @@ $query = mysqli_query($conn,"SELECT * FROM components");
         success:function(response,textStatus,xhr){
           Swal.fire({
             icon:"success",
-            title:"Created New Dashboard!",
-            text:"New Dashboard Created Successfully."
+            title:"Dashboard Created!",
+            text:"Dashboard Created Successfully."
           });
         },
         error:function(err){
@@ -347,19 +371,15 @@ $query = mysqli_query($conn,"SELECT * FROM components");
           });
         }
       });
-      console.log(data);
+      // console.log(data);
     }
 
     function deleteRow(id){
-      let components = document.querySelectorAll(`#row-${id} .ui-sortable-handle`);
-      if(components.length != 0){
-          Swal.fire({
-            icon:"warning",
-            title:"Please Empty Row First!"
-          });
-        return void(0);
-      }
       $("#row-"+id).remove();
+    }
+
+    function deleteComponent(that){
+      $(that).closest('.ui-sortable-handle').remove();
     }
   </script>
 </body>
