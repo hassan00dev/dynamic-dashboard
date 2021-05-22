@@ -227,6 +227,9 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
         cursorAt: {
           right: 50,
           top: 3
+        },
+        remove: function (event, ui) {
+            ui.item.clone().appendTo('#nav-home');
         }
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
@@ -286,7 +289,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
 
     function addColumnOnRow(rowId, columns, dbRow = null) {
       let cols = ``;
-      console.log(dbRow);
+      // console.log(dbRow);
       columns.forEach(function(col, index) {
         let content = '';
         if(dbRow != null){
@@ -297,7 +300,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
             let componentId = dbRow['componentIds'][pos];
             let div = $(`div[data-component-id="${componentId}"]`);
             let card = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
-            div.remove();
+            // div.remove();
             content = card;
           }
         }
@@ -322,7 +325,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
         dataType:'json',
         data:data,
         success:function(response,textStatus,xhr){
-          console.log(response);
+          // console.log(response);
           Object.keys(response.rows).forEach(rowPosition => {
             let rowId = addRow();
             let row = response.rows[rowPosition];
