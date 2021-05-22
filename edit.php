@@ -83,16 +83,22 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
       background-color: #f5f5f5;
     }
 
-    .remove-row{
+    .remove-row,.remove-col{
       z-index: 99999;
       font-size: 14px;
       cursor: pointer;
       position: absolute;
       border-radius:10px;
+    }
+    .remove-col{
       top: -8px;
       right: -8px;
     }
-    .remove-row:hover{
+    .remove-row{
+      top: -8px;
+      left: -8px;
+    }
+    .remove-row:hover,.remove-col:hover{
       background-color: #ff0000;
     }
     .connectedSortable{
@@ -304,12 +310,12 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
             if(Array.isArray(componentId)){
               componentId.forEach(function(id,i){
                 let div = $(`div[data-component-id="${id}"]`);
-                let card = `<div class="card mb-1" data-component-id="${id}" >${div.html()}</div>`;
+                let card = `<div class="card mb-1" data-component-id="${id}" >${div.html()}<div class="badge badge-danger remove-col" onclick="deleteComponent(this)">X</div></div>`;
                 content += card;
               });
             }else{
               let div = $(`div[data-component-id="${componentId}"]`);
-              content = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
+              content = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}<div class="badge badge-danger remove-col" onclick="deleteComponent(this)">X</div></div>`;
             }
             // div.remove();
           }
@@ -429,6 +435,10 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
 
     function deleteRow(id){
       $("#row-"+id).remove();
+    }
+
+    function deleteComponent(that){
+      $(that).closest('.ui-sortable-handle').remove();
     }
   </script>
 </body>
