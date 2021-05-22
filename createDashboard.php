@@ -155,6 +155,10 @@ $query = mysqli_query($conn,"SELECT * FROM components");
         },
         remove: function (event, ui) {
             ui.item.clone().appendTo('#nav-home');
+        },
+        out:function(event,ui){
+          let closeBtn = `<div class="badge badge-danger remove-col" onclick="deleteComponent(this)">X</div>`;
+          ui.item.append(closeBtn);
         }
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
