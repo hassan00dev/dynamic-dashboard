@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2021 at 09:08 PM
+-- Generation Time: May 22, 2021 at 10:05 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -39,9 +39,9 @@ CREATE TABLE `architectures` (
 --
 
 INSERT INTO `architectures` (`id`, `dashboard_id`, `row_position`, `pattern`) VALUES
-(195, 1, 0, '12'),
-(196, 1, 1, '6,6'),
-(197, 1, 2, '3,3,3,3');
+(20, 1, 0, '4,4,4'),
+(21, 1, 1, '4,8'),
+(22, 7, 0, '3,6,3');
 
 -- --------------------------------------------------------
 
@@ -64,11 +64,14 @@ CREATE TABLE `columns` (
 --
 
 INSERT INTO `columns` (`id`, `column`, `component_id`, `row_position`, `col_position`, `vertical_col_position`, `dashboard_id`) VALUES
-(309, 12, 3, 0, 0, 0, 1),
-(310, 6, 4, 1, 0, 0, 1),
-(311, 6, 4, 1, 1, 0, 1),
-(312, 3, 7, 2, 1, 0, 1),
-(313, 3, 8, 2, 1, 1, 1);
+(29, 4, 4, 0, 0, 0, 1),
+(30, 4, 6, 0, 1, 0, 1),
+(31, 4, 6, 0, 2, 0, 1),
+(32, 4, 8, 0, 2, 1, 1),
+(33, 8, 7, 1, 1, 0, 1),
+(34, 3, 4, 0, 0, 0, 7),
+(35, 6, 5, 0, 1, 0, 7),
+(36, 3, 7, 0, 2, 0, 7);
 
 -- --------------------------------------------------------
 
@@ -115,29 +118,8 @@ CREATE TABLE `dashboards` (
 --
 
 INSERT INTO `dashboards` (`id`, `name`, `color`) VALUES
-(1, 'default dashboard', '#20b94f');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` text NOT NULL,
-  `token` text DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `token`, `status`) VALUES
-(1, 'codingwithhassan', 'hassan.javed.bcs20021@gmail.com', '$2y$10$iwICOeTYPI63N/Xn5tGt/eLD0Vl29lrf.Gkl/JaICj7xPNVIfbLLS', NULL, 1);
+(1, 'Default Dashboard', '#f21c1c'),
+(7, 'tempate 2', '#35a815');
 
 --
 -- Indexes for dumped tables
@@ -173,12 +155,6 @@ ALTER TABLE `dashboards`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -186,13 +162,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `architectures`
 --
 ALTER TABLE `architectures`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `columns`
 --
 ALTER TABLE `columns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=314;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `components`
@@ -204,13 +180,7 @@ ALTER TABLE `components`
 -- AUTO_INCREMENT for table `dashboards`
 --
 ALTER TABLE `dashboards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
