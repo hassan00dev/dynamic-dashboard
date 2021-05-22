@@ -90,7 +90,7 @@ if (isset($_GET['id'])) {
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <?php
-                                                $d_q = mysqli_query($conn, "SELECT * FROM dashboards;");
+                                                $d_q = mysqli_query($conn, "SELECT * FROM dynamic_dashboards;");
                                                 while ($d_r = mysqli_fetch_assoc($d_q)) {
                                                 ?>
                                                     <a class="dropdown-item <?php

@@ -8,7 +8,7 @@ $id = $data[0]['dashboardId'];
 
 $name = $dashboard['name'];
 $color = $dashboard['color'];
-mysqli_query($conn,"UPDATE `dashboards` SET 
+mysqli_query($conn,"UPDATE `dynamic_dashboards` SET 
 `name`='$name',
 `color`='$color'
  WHERE id = '$id'");

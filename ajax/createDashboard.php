@@ -6,7 +6,7 @@ $dashboard = $_POST['dashboard'];
 
 $name = $dashboard['name'];
 $color = $dashboard['color'];
-mysqli_query($conn,"INSERT INTO `dashboards`(`name`, `color`) VALUES ('$name','$color')");
+mysqli_query($conn,"INSERT INTO `dynamic_dashboards`(`name`, `color`) VALUES ('$name','$color')");
 
 $id = mysqli_insert_id($conn);
 

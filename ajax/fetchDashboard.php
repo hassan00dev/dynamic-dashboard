@@ -7,7 +7,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 $dashboard_id = $_POST['dashboardId'];
 
-$dashboard_detail = mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM `dashboards` WHERE id = '$dashboard_id'"));
+$dashboard_detail = mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM `dynamic_dashboards` WHERE id = '$dashboard_id'"));
 
 function fetch_rows() {
     $conn = $GLOBALS['conn'];

@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
   header('location:index.php');
 }
 
-$dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboards WHERE id = '$dashboard_id';"));
+$dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic_dashboards WHERE id = '$dashboard_id';"));
 
 ?>
 <!DOCTYPE html>
