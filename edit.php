@@ -298,10 +298,17 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
           });
           if(pos >= 0){
             let componentId = dbRow['componentIds'][pos];
-            let div = $(`div[data-component-id="${componentId}"]`);
-            let card = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
+            if(Array.isArray(componentId)){
+              componentId.forEach(function(id,i){
+                let div = $(`div[data-component-id="${id}"]`);
+                let card = `<div class="card mb-1" data-component-id="${id}" >${div.html()}</div>`;
+                content += card;
+              });
+            }else{
+              let div = $(`div[data-component-id="${componentId}"]`);
+              content = `<div class="card mb-1" data-component-id="${componentId}" >${div.html()}</div>`;
+            }
             // div.remove();
-            content = card;
           }
         }
         cols += `<div class="connectedSortable col-md-${col}" data-col="${col}" data-col-position="${index}">${content}</div>`;
@@ -330,7 +337,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
             let rowId = addRow();
             let row = response.rows[rowPosition];
             let pattern = row.pattern;
-
+            console.log(row);
             addColumnOnRow(rowId,pattern,row);
           });
         },
