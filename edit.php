@@ -368,6 +368,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
         let rowPosition = val.parentNode.getAttribute('data-row-position');
         let cols = val.parentNode.getAttribute('data-columns');
         let col = val.getAttribute('data-col');
+
         let colPosition = val.getAttribute('data-col-position');
         let componentId = val.childNodes[0];
         
@@ -377,7 +378,17 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
           componentId = null;
         }
         
-        let component = {rowPosition,cols,col,colPosition,componentId,dashboardId:"<?= $dashboard_id ?>"};
+        let vColPosition = [];
+        if(val.childElementCount > 0){
+          componentId = [];
+          for(let i = 0;i<val.childElementCount;i++){
+            let child = val.children[i];
+            componentId.push(child.getAttribute('data-component-id'));
+            vColPosition.push(i);
+          }
+        }
+
+        let component = {rowPosition,cols,col,colPosition,vColPosition,componentId,dashboardId:"<?= $dashboard_id ?>"};
         data.push(component);
       }); 
       
