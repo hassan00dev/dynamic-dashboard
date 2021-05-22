@@ -1,10 +1,6 @@
 <?php
 include_once('connection/connect.php');
 
-if(!isset($_SESSION['auth'])){
-    header('location:auth/login.php');
-}
-
 if (isset($_GET['id'])) {
     $dashboard_id = $_GET['id'];
 } else {
