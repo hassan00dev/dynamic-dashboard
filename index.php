@@ -145,7 +145,7 @@ if (isset($_GET['id'])) {
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <?php
                                                 $d_q = mysqli_query($conn, "SELECT * FROM dashboards;");
-                                                while ($d_r = mysqli_fetch_array($d_q)) {
+                                                while ($d_r = mysqli_fetch_assoc($d_q)) {
                                                 ?>
                                                     <a class="dropdown-item <?php
                                                         if($d_r['id'] == $dashboard_id){
@@ -175,7 +175,7 @@ if (isset($_GET['id'])) {
                             <div class="container-fluid">
                                 <?php
                                 $query = mysqli_query($conn, "SELECT * FROM architectures WHERE dashboard_id = '$dashboard_id'  ORDER BY row_position ASC");
-                                while ($row = mysqli_fetch_array($query)) {
+                                while ($row = mysqli_fetch_assoc($query)) {
                                 ?>
                                     <div class="row">
                                         <?php
@@ -183,13 +183,14 @@ if (isset($_GET['id'])) {
                                         $row_position = $row['row_position'];
                                         foreach ($pattern as $col_position => $col) {
                                             $col_query = mysqli_query($conn, "SELECT * FROM `columns` WHERE dashboard_id = '$dashboard_id' && row_position = '$row_position' && col_position = '$col_position';");
-                                            if (mysqli_num_rows($col_query) > 0) {
-                                                $col_record = mysqli_fetch_array($col_query);
-                                                $component_id = $col_record['component_id'];
-                                                $component_query = mysqli_query($conn, "SELECT * FROM components WHERE id = '$component_id'");
-                                                $component = mysqli_fetch_array($component_query);
+                                            if (mysqli_num_rows($col_query) > 0) { ?>
+                                            <div class="col-md-<?= $col ?>">
+                                            <?php
+                                                while($col_record = mysqli_fetch_assoc($col_query)){
+                                                    $component_id = $col_record['component_id'];
+                                                    $component_query = mysqli_query($conn, "SELECT * FROM components WHERE id = '$component_id'");
+                                                    $component = mysqli_fetch_assoc($component_query);
                                         ?>
-                                                <div class="col-md-<?= $col_record['column'] ?>">
                                                     <div class="card mb-1">
                                                         <div class="card-header">
                                                             <h3 class="card-title">
@@ -198,8 +199,10 @@ if (isset($_GET['id'])) {
                                                             </h3>
                                                         </div>
                                                     </div>
-                                                </div>
                                             <?php
+                                                }?>
+                                                </div>
+                                                <?php
                                             } else {
                                             ?>
                                                 <div class="col-md-<?= $col ?>"></div>
