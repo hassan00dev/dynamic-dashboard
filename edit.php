@@ -36,7 +36,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
     }
 
     .col-row-height {
-      height: 60px;
+      min-height: 60px;
       position: relative;
     }
 
@@ -94,6 +94,9 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
     }
     .remove-row:hover{
       background-color: #ff0000;
+    }
+    .connectedSortable{
+      min-height:50px;
     }
   </style>
 </head>
