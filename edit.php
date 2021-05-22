@@ -428,14 +428,6 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dashboa
     }
 
     function deleteRow(id){
-      let components = document.querySelectorAll(`#row-${id} .ui-sortable-handle`);
-      if(components.length != 0){
-          Swal.fire({
-            icon:"warning",
-            title:"Please Empty Row First!"
-          });
-        return void(0);
-      }
       $("#row-"+id).remove();
     }
   </script>
