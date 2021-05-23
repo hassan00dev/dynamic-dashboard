@@ -66,35 +66,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
           <div class="row mt-3">
 
             <section class="col-lg-3 component-sidebar">
-              <nav>
-                <div class="nav nav-tabs justify-content-between" id="nav-tab" role="tablist">
-                  <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                    <i class="fas fa-cogs"></i> Components
-                  </a>
-                  <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="dropdownMenuButton" data-toggle="dropdown">
-                    <i class="fas fa-list"></i>
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
-                </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active pt-2 connectedSortable" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <?php while ($component = mysqli_fetch_array($query)) : ?>
-                    <div class="card mb-1" data-component-id="<?= $component['id'] ?>">
-                      <div class="card-header">
-                        <h3 class="card-title">
-                          <i class="<?= $component['icon'] ?> mr-1"></i>
-                          <?= $component['title'] ?>
-                        </h3>
-                      </div>
-                    </div>
-                  <?php endwhile; ?>
-                </div>
-              </div>
+                <?php include_once('include/components.php'); ?>
             </section>
 
             <section class="col-lg-9">
@@ -160,15 +132,42 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
         cursorAt: {
           right: 50,
           top: 3
-        },
-        remove: function (event, ui) {
-          let i = ui.item.clone();
-          i.find('.remove-col').remove();
-          i.appendTo('#nav-home');
-        },
-        out:function(event,ui){
+        }
+        stop: function(event, ui) {
           let closeBtn = `<div class="badge badge-danger remove-col" onclick="deleteComponent(this)">X</div>`;
-          ui.item.append(closeBtn);
+          if (ui.item.parent().attr('id') != 'component-sidebar') {
+            console.log('in');
+            ui.item.append(closeBtn);
+            let i = ui.item.clone();
+            i.find('.remove-col').remove();
+            i.appendTo('#component-sidebar');
+          }else{
+            ui.item.find('.remove-col').remove();
+          }
+
+          let components = Array.from(document.getElementById("component-sidebar").children);
+          components.sort(function(a, b) {
+            return a.getAttribute('data-counter') - b.getAttribute('data-counter');
+          });
+          document.getElementById("component-sidebar").innerHTML = '';
+          let filterComponents = [];
+          components.forEach(function(value, index, self) {
+            let counter = value.getAttribute('data-counter');
+            let yes = true;
+            for (x = 0; x < filterComponents.length; x++) {
+              let c = filterComponents[x].getAttribute('data-counter');
+              if (c == counter) {
+                yes = false;
+                break;
+              }
+            }
+            if (yes) {
+              filterComponents.push(value);
+            }
+          });
+          for (let component of filterComponents) {
+            document.getElementById("component-sidebar").insertAdjacentElement('beforeend', component);
+          }
         }
       })
       $('.connectedSortable .card-header').css('cursor', 'move');

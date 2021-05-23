@@ -1,6 +1,6 @@
 <?php
 include_once('connection/connect.php');
-$query = mysqli_query($conn,"SELECT * FROM components");
+$query = mysqli_query($conn, "SELECT * FROM components");
 
 ?>
 <!DOCTYPE html>
@@ -9,7 +9,7 @@ $query = mysqli_query($conn,"SELECT * FROM components");
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Edit Dashboard</title>
+  <title>Create Dashboard</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -20,7 +20,7 @@ $query = mysqli_query($conn,"SELECT * FROM components");
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- custom css -->
   <link rel="stylesheet" href="assets/css/custom.css">
-  <link rel="stylesheet" href="assets/css/dragdrop.css" >
+  <link rel="stylesheet" href="assets/css/dragdrop.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -58,52 +58,24 @@ $query = mysqli_query($conn,"SELECT * FROM components");
           <div class="row mt-3">
 
             <section class="col-lg-3 component-sidebar">
-              <nav>
-                <div class="nav nav-tabs justify-content-between" id="nav-tab" role="tablist">
-                  <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                    <i class="fas fa-cogs"></i> Components
-                  </a>
-                  <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="dropdownMenuButton" data-toggle="dropdown">
-                    <i class="fas fa-list"></i>
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
-                </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active pt-2 connectedSortable" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <?php while ($component = mysqli_fetch_array($query)) : ?>
-                    <div class="card mb-1" data-component-id="<?= $component['id'] ?>">
-                      <div class="card-header">
-                        <h3 class="card-title">
-                          <i class="<?= $component['icon'] ?> mr-1"></i>
-                          <?= $component['title'] ?>
-                        </h3>
-                      </div>
-                    </div>
-                  <?php endwhile; ?>
-                </div>
-              </div>
+              <?php include_once('include/components.php'); ?>
             </section>
 
             <section class="col-lg-9">
               <div class="container px-4 mb-3">
                 <div class="row justify-content-end">
-                      <button type="button" class="btn btn-primary" onclick="saveDashboard()">Save</button>
+                  <button type="button" class="btn btn-primary" onclick="saveDashboard()">Save</button>
                 </div>
-                
+
                 <div class="row">
-                    <div class="form-group col-md-9">
-                      <label>Title</label>
-                      <input type="text" class="form-control" id="dashboard-title">
-                    </div>
-                    <div class="form-group col-md-3">
-                      <label>Color</label>
-                      <input type="color" class="form-control" id="dashboard-color">
-                    </div>
+                  <div class="form-group col-md-9">
+                    <label>Title</label>
+                    <input type="text" class="form-control" id="dashboard-title">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Color</label>
+                    <input type="color" class="form-control" id="dashboard-color">
+                  </div>
                 </div>
               </div>
               <div class="container-fluid" id="dashboard-container">
@@ -153,14 +125,41 @@ $query = mysqli_query($conn,"SELECT * FROM components");
           right: 50,
           top: 3
         },
-        remove: function (event, ui) {
+        stop: function(event, ui) {
+          let closeBtn = `<div class="badge badge-danger remove-col" onclick="deleteComponent(this)">X</div>`;
+          if (ui.item.parent().attr('id') != 'component-sidebar') {
+            console.log('in');
+            ui.item.append(closeBtn);
             let i = ui.item.clone();
             i.find('.remove-col').remove();
-            i.appendTo('#nav-home');
-        },
-        out:function(event,ui){
-          let closeBtn = `<div class="badge badge-danger remove-col" onclick="deleteComponent(this)">X</div>`;
-          ui.item.append(closeBtn);
+            i.appendTo('#component-sidebar');
+          }else{
+            ui.item.find('.remove-col').remove();
+          }
+
+          let components = Array.from(document.getElementById("component-sidebar").children);
+          components.sort(function(a, b) {
+            return a.getAttribute('data-counter') - b.getAttribute('data-counter');
+          });
+          document.getElementById("component-sidebar").innerHTML = '';
+          let filterComponents = [];
+          components.forEach(function(value, index, self) {
+            let counter = value.getAttribute('data-counter');
+            let yes = true;
+            for (x = 0; x < filterComponents.length; x++) {
+              let c = filterComponents[x].getAttribute('data-counter');
+              if (c == counter) {
+                yes = false;
+                break;
+              }
+            }
+            if (yes) {
+              filterComponents.push(value);
+            }
+          });
+          for (let component of filterComponents) {
+            document.getElementById("component-sidebar").insertAdjacentElement('beforeend', component);
+          }
         }
       })
       $('.connectedSortable .card-header').css('cursor', 'move');
@@ -226,8 +225,8 @@ $query = mysqli_query($conn,"SELECT * FROM components");
       });
       cols += `<div class="badge badge-danger remove-row" onclick="deleteRow(${rowId})">X</div>`;
       let row = $(`#row-${rowId}`);
-      row.attr('data-row-position',rowId);
-      row.attr('data-columns',columns);
+      row.attr('data-row-position', rowId);
+      row.attr('data-columns', columns);
       row.html(cols);
       row.addClass('col-row-height');
       init();
@@ -235,80 +234,90 @@ $query = mysqli_query($conn,"SELECT * FROM components");
 
     saveDashboard = () => {
 
-      if($("#dashboard-title").val() == ""){
+      if ($("#dashboard-title").val() == "") {
         Swal.fire({
-          icon:"warning",
-          title:"Empty!",
-          text:"Please Enter Dashboard Title and Color"
+          icon: "warning",
+          title: "Empty!",
+          text: "Please Enter Dashboard Title and Color"
         });
         return void(0);
       }
 
       let dashboardDetail = {
-        name:$("#dashboard-title").val(),
-        color:$("#dashboard-color").val()
+        name: $("#dashboard-title").val(),
+        color: $("#dashboard-color").val()
       };
 
       let data = [];
       let selectors = document.querySelectorAll('.connectedSortable[data-col]');
-      selectors.forEach(function(val,index,array){
+      selectors.forEach(function(val, index, array) {
         let rowPosition = val.parentNode.getAttribute('data-row-position');
         let cols = val.parentNode.getAttribute('data-columns');
         let col = val.getAttribute('data-col');
 
         let colPosition = val.getAttribute('data-col-position');
         let componentId = val.childNodes[0];
-        
-        if(componentId){
+
+        if (componentId) {
           componentId = componentId.getAttribute('data-component-id');
-        }else{
+        } else {
           componentId = null;
         }
-        
+
         let vColPosition = [];
-        if(val.childElementCount > 0){
+        if (val.childElementCount > 0) {
           componentId = [];
-          for(let i = 0;i<val.childElementCount;i++){
+          for (let i = 0; i < val.childElementCount; i++) {
             let child = val.children[i];
             componentId.push(child.getAttribute('data-component-id'));
             vColPosition.push(i);
           }
         }
 
-        let component = {rowPosition,cols,col,colPosition,vColPosition,componentId};
+        let component = {
+          rowPosition,
+          cols,
+          col,
+          colPosition,
+          vColPosition,
+          componentId
+        };
         data.push(component);
-      }); 
-      
+      });
+
       /**
        * Send Post Request
        */
       $.ajax({
-        method:"post",
-        url:"<?= APP_URL ?>/ajax/createDashboard.php",
-        data:{data:data,dashboard:dashboardDetail},
-        success:function(response,textStatus,xhr){
+        method: "post",
+        url: "<?= APP_URL ?>/ajax/createDashboard.php",
+        data: {
+          data: data,
+          dashboard: dashboardDetail
+        },
+        success: function(response, textStatus, xhr) {
           Swal.fire({
-            icon:"success",
-            title:"Dashboard Created!",
-            text:"Dashboard Created Successfully."
+            icon: "success",
+            title: "Dashboard Created!",
+            text: "Dashboard Created Successfully."
           });
         },
-        error:function(err){
+        error: function(err) {
           Swal.fire({
-            icon:"error",
-            title:"Internal Server Error!",
-            text:"Something Went Wrong!"
+            icon: "error",
+            title: "Internal Server Error!",
+            text: "Something Went Wrong!"
           });
         }
       });
       // console.log(data);
     }
 
-    function deleteRow(id){
-      $("#row-"+id).remove();
+    function deleteRow(id) {
+      $("#row-" + id).remove();
     }
 
-    function deleteComponent(that){
+    function deleteComponent(that) {
       $(that).closest('.ui-sortable-handle').remove();
     }
   </script>
