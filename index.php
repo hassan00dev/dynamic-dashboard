@@ -58,28 +58,6 @@ if (isset($_GET['id'])) {
 
                     <div class="row mt-3">
 
-                        <section class="col-lg-3 component-sidebar">
-                            <nav>
-                                <div class="nav nav-tabs justify-content-between" id="nav-tab" role="tablist">
-                                    <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                                        <i class="fas fa-cogs"></i> Components
-                                    </a>
-                                    <a class="nav-link dropdown-toggle" href="javascript::void(0);" id="dropdownMenuButton" data-toggle="dropdown">
-                                        <i class="fas fa-list"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </div>
-                            </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active pt-2" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                </div>
-                            </div>
-                        </section>
-
                         <section class="col-lg-9">
                             <div class="container-fluid">
                                 <div class="row mb-2">
