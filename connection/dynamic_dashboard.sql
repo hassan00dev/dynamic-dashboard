@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2021 at 10:05 PM
+-- Generation Time: May 24, 2021 at 06:30 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dynamic-dashboard`
+-- Database: `dynamic_dashboard`
 --
 
 -- --------------------------------------------------------
@@ -39,9 +39,11 @@ CREATE TABLE `architectures` (
 --
 
 INSERT INTO `architectures` (`id`, `dashboard_id`, `row_position`, `pattern`) VALUES
-(20, 1, 0, '4,4,4'),
-(21, 1, 1, '4,8'),
-(22, 7, 0, '3,6,3');
+(1, 1, 0, '12'),
+(2, 1, 1, '3,6,3'),
+(3, 1, 2, '4,8'),
+(4, 2, 0, '3,6,3'),
+(5, 3, 0, '4,4,4');
 
 -- --------------------------------------------------------
 
@@ -64,14 +66,13 @@ CREATE TABLE `columns` (
 --
 
 INSERT INTO `columns` (`id`, `column`, `component_id`, `row_position`, `col_position`, `vertical_col_position`, `dashboard_id`) VALUES
-(29, 4, 4, 0, 0, 0, 1),
-(30, 4, 6, 0, 1, 0, 1),
-(31, 4, 6, 0, 2, 0, 1),
-(32, 4, 8, 0, 2, 1, 1),
-(33, 8, 7, 1, 1, 0, 1),
-(34, 3, 4, 0, 0, 0, 7),
-(35, 6, 5, 0, 1, 0, 7),
-(36, 3, 7, 0, 2, 0, 7);
+(1, 12, 1, 0, 0, 0, 1),
+(2, 6, 6, 1, 1, 0, 1),
+(3, 6, 4, 1, 1, 1, 1),
+(4, 8, 6, 2, 1, 0, 1),
+(5, 6, 1, 0, 1, 0, 2),
+(6, 4, 3, 0, 0, 0, 3),
+(7, 4, 5, 0, 2, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -104,22 +105,23 @@ INSERT INTO `components` (`id`, `title`, `icon`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dashboards`
+-- Table structure for table `dynamic_dashboards`
 --
 
-CREATE TABLE `dashboards` (
+CREATE TABLE `dynamic_dashboards` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `color` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `dashboards`
+-- Dumping data for table `dynamic_dashboards`
 --
 
-INSERT INTO `dashboards` (`id`, `name`, `color`) VALUES
-(1, 'Default Dashboard', '#f21c1c'),
-(7, 'tempate 2', '#35a815');
+INSERT INTO `dynamic_dashboards` (`id`, `name`, `color`) VALUES
+(1, 'Default Dashboard', '#59ff00'),
+(2, 'template 2', '#000000'),
+(3, 'template 3', '#c51b1b');
 
 --
 -- Indexes for dumped tables
@@ -130,8 +132,7 @@ INSERT INTO `dashboards` (`id`, `name`, `color`) VALUES
 --
 ALTER TABLE `architectures`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `dashboard_id` (`dashboard_id`),
-  ADD KEY `row_position` (`row_position`);
+  ADD KEY `dashboard_id` (`dashboard_id`);
 
 --
 -- Indexes for table `columns`
@@ -139,8 +140,7 @@ ALTER TABLE `architectures`
 ALTER TABLE `columns`
   ADD PRIMARY KEY (`id`),
   ADD KEY `component_id` (`component_id`),
-  ADD KEY `dashboard_id` (`dashboard_id`),
-  ADD KEY `row_position` (`row_position`);
+  ADD KEY `dashboard_id` (`dashboard_id`);
 
 --
 -- Indexes for table `components`
@@ -149,10 +149,11 @@ ALTER TABLE `components`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `dashboards`
+-- Indexes for table `dynamic_dashboards`
 --
-ALTER TABLE `dashboards`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `dynamic_dashboards`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -162,13 +163,13 @@ ALTER TABLE `dashboards`
 -- AUTO_INCREMENT for table `architectures`
 --
 ALTER TABLE `architectures`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `columns`
 --
 ALTER TABLE `columns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `components`
@@ -177,10 +178,10 @@ ALTER TABLE `components`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `dashboards`
+-- AUTO_INCREMENT for table `dynamic_dashboards`
 --
-ALTER TABLE `dashboards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `dynamic_dashboards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -190,15 +191,14 @@ ALTER TABLE `dashboards`
 -- Constraints for table `architectures`
 --
 ALTER TABLE `architectures`
-  ADD CONSTRAINT `architectures_ibfk_1` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `architectures_ibfk_1` FOREIGN KEY (`dashboard_id`) REFERENCES `dynamic_dashboards` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `columns`
 --
 ALTER TABLE `columns`
   ADD CONSTRAINT `columns_ibfk_1` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `columns_ibfk_2` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `columns_ibfk_3` FOREIGN KEY (`row_position`) REFERENCES `architectures` (`row_position`) ON DELETE CASCADE;
+  ADD CONSTRAINT `columns_ibfk_2` FOREIGN KEY (`dashboard_id`) REFERENCES `dynamic_dashboards` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

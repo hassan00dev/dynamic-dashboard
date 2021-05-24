@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2021 at 10:26 PM
+-- Generation Time: May 24, 2021 at 06:30 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -311,26 +311,6 @@ CREATE TABLE `dashboard` (
 
 INSERT INTO `dashboard` (`id_dashboard`, `dashboard_nome`, `dashboard_descricao`, `dashboard_timestamp`, `dashboard_id_pessoa`, `dashboard_id_empresa`, `dashboard_id_login_senha`) VALUES
 (1, 'Dashboard1', 'Este é o Dashboard 1', '2021-03-07 02:59:43', 1, 1, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `dashboards`
---
-
-CREATE TABLE `dashboards` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `color` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `dashboards`
---
-
-INSERT INTO `dashboards` (`id`, `name`, `color`) VALUES
-(1, 'Default Dashboard', '#f21c1c'),
-(7, 'tempate 2', '#35a815');
 
 -- --------------------------------------------------------
 
@@ -4822,6 +4802,26 @@ INSERT INTO `dispositivo` (`id_dispositivo`, `dispositivo_nome`, `dispositivo_de
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dynamic_dashboards`
+--
+
+CREATE TABLE `dynamic_dashboards` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `color` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `dynamic_dashboards`
+--
+
+INSERT INTO `dynamic_dashboards` (`id`, `name`, `color`) VALUES
+(1, 'Default Dashboard', '#f21c1c'),
+(7, 'tempate 2', '#35a815');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `empresa`
 --
 
@@ -5315,8 +5315,7 @@ INSERT INTO `users` (`users_id`, `users_date`, `users_email`, `users_password`) 
 --
 ALTER TABLE `architectures`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `dashboard_id` (`dashboard_id`),
-  ADD KEY `row_position` (`row_position`);
+  ADD KEY `dashboard_id` (`dashboard_id`);
 
 --
 -- Indexes for table `cadastro_curriculo_site`
@@ -5354,8 +5353,7 @@ ALTER TABLE `cargo_interno_historico`
 ALTER TABLE `columns`
   ADD PRIMARY KEY (`id`),
   ADD KEY `component_id` (`component_id`),
-  ADD KEY `dashboard_id` (`dashboard_id`),
-  ADD KEY `row_position` (`row_position`);
+  ADD KEY `dashboard_id` (`dashboard_id`);
 
 --
 -- Indexes for table `complemento_empresa`
@@ -5382,16 +5380,17 @@ ALTER TABLE `dashboard`
   ADD PRIMARY KEY (`id_dashboard`);
 
 --
--- Indexes for table `dashboards`
---
-ALTER TABLE `dashboards`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `dispositivo`
 --
 ALTER TABLE `dispositivo`
   ADD PRIMARY KEY (`id_dispositivo`);
+
+--
+-- Indexes for table `dynamic_dashboards`
+--
+ALTER TABLE `dynamic_dashboards`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `empresa`
@@ -5573,16 +5572,16 @@ ALTER TABLE `dashboard`
   MODIFY `id_dashboard` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `dashboards`
---
-ALTER TABLE `dashboards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
 -- AUTO_INCREMENT for table `dispositivo`
 --
 ALTER TABLE `dispositivo`
   MODIFY `id_dispositivo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `dynamic_dashboards`
+--
+ALTER TABLE `dynamic_dashboards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `empresa`
@@ -5700,15 +5699,14 @@ ALTER TABLE `users`
 -- Constraints for table `architectures`
 --
 ALTER TABLE `architectures`
-  ADD CONSTRAINT `architectures_ibfk_1` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `architectures_ibfk_1` FOREIGN KEY (`dashboard_id`) REFERENCES `dynamic_dashboards` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `columns`
 --
 ALTER TABLE `columns`
   ADD CONSTRAINT `columns_ibfk_1` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `columns_ibfk_2` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboards` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `columns_ibfk_3` FOREIGN KEY (`row_position`) REFERENCES `architectures` (`row_position`) ON DELETE CASCADE;
+  ADD CONSTRAINT `columns_ibfk_2` FOREIGN KEY (`dashboard_id`) REFERENCES `dynamic_dashboards` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
