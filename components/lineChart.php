@@ -1,7 +1,6 @@
 <canvas id="<?= basename($component['file'],'.php').$component['id'] ?>"></canvas>
 <script>
-let id = "<?= basename($component['file'],'.php').$component['id'] ?>";
-var ctx = document.getElementById(id).getContext('2d');
+var ctx = document.getElementById("<?= basename($component['file'],'.php').$component['id'] ?>").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
