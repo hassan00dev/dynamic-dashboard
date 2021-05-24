@@ -15,6 +15,7 @@ mysqli_query($conn,"UPDATE `dynamic_dashboards` SET
 
 // delete all rows
 mysqli_query($conn,"DELETE FROM `architectures` WHERE dashboard_id = '$id';");
+mysqli_query($conn,"DELETE FROM `columns` WHERE dashboard_id = '$id';");
 
 foreach($data as $row){
 
