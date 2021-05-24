@@ -21,6 +21,8 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.1/chart.min.js" integrity="sha512-tOcHADT+YGCQqH7YO99uJdko6L8Qk5oudLN6sCeI4BQnpENq6riR6x9Im+SGzhXpgooKBRkPsget4EOoH5jNCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- custom css -->
     <link rel="stylesheet" href="assets/css/custom.css">
 </head>
@@ -121,6 +123,9 @@ if (isset($_GET['id'])) {
                                                                 <i class="<?= $component['icon'] ?> mr-1"></i>
                                                                 <?= $component['title'] ?>
                                                             </h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <?php include("components/".$component['file']); ?>
                                                         </div>
                                                     </div>
                                             <?php
