@@ -133,7 +133,7 @@ $query = mysqli_query($conn, "SELECT * FROM components");
             let i = ui.item.clone();
             i.find('.remove-col').remove();
             i.appendTo('#component-sidebar');
-          }else{
+          } else {
             ui.item.find('.remove-col').remove();
           }
 
@@ -300,6 +300,8 @@ $query = mysqli_query($conn, "SELECT * FROM components");
             icon: "success",
             title: "Dashboard Created!",
             text: "Dashboard Created Successfully."
+          }).then((result) => {
+            window.location.replace('index.php');
           });
         },
         error: function(err) {

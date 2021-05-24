@@ -349,6 +349,8 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
             icon:"success",
             title:"Dashboard Updated!",
             text:"Dashboard Updated Successfully."
+          }).then((result) => {
+            window.location.replace('index.php?id=<?= $dashboard_id ?>');
           });
         },
         error:function(err){
