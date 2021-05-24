@@ -132,7 +132,7 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
         cursorAt: {
           right: 50,
           top: 3
-        }
+        },
         stop: function(event, ui) {
           let closeBtn = `<div class="badge badge-danger remove-col" onclick="deleteComponent(this)">X</div>`;
           if (ui.item.parent().attr('id') != 'component-sidebar') {

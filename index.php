@@ -58,7 +58,7 @@ if (isset($_GET['id'])) {
 
                     <div class="row mt-3">
 
-                        <section class="col-lg-9">
+                        <section class="col-12">
                             <div class="container-fluid">
                                 <div class="row mb-2">
                                     <div class="col-md-3 d-flex justify-content-between">
