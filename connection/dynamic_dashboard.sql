@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2021 at 06:30 PM
+-- Generation Time: May 24, 2021 at 08:41 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -83,24 +83,25 @@ INSERT INTO `columns` (`id`, `column`, `component_id`, `row_position`, `col_posi
 CREATE TABLE `components` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `icon` varchar(255) NOT NULL
+  `icon` varchar(255) NOT NULL,
+  `file` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `components`
 --
 
-INSERT INTO `components` (`id`, `title`, `icon`) VALUES
-(1, 'Sales', 'fas fa-chart-pie'),
-(2, 'Bars', 'fas fa-bars'),
-(3, 'Users', 'fas fa-users'),
-(4, 'VS Code', 'fas fa-desktop'),
-(5, 'Brackets Editor', 'fas fa-edit'),
-(6, 'To-do', 'fas fa-th-list'),
-(7, 'component 1', 'fas fa-box'),
-(8, 'component 2', 'fas fa-box'),
-(9, 'component 3', 'fas fa-box'),
-(10, 'component 4', 'fas fa-box');
+INSERT INTO `components` (`id`, `title`, `icon`, `file`) VALUES
+(1, 'Line Chart', 'fas fa-chart-pie', 'lineChart.php'),
+(2, 'Columns Chart', 'fas fa-bars', 'columnsChart.php'),
+(3, 'CPU Usage', 'fas fa-users', 'cpuUsage.php'),
+(4, 'Dragging Interval', 'fas fa-desktop', 'draggingInterval.php'),
+(5, 'Pie Chart', 'fas fa-edit', 'PieChart.php'),
+(6, 'Switches', 'fas fa-th-list', 'switches.php'),
+(7, 'Total Clicks', 'fas fa-box', 'totalClicks.php'),
+(8, 'Gauge Chart', 'fas fa-box', 'gaugeChart.php'),
+(9, 'Gauge Styled Chart', 'fas fa-box', 'gaugeStyleChart.php'),
+(10, 'Ram Usage', 'fas fa-box', 'ramUsage.php');
 
 -- --------------------------------------------------------
 
