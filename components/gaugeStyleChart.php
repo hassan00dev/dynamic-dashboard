@@ -1,7 +1,7 @@
-<canvas class="<?= basename($component['file'],'.php').$component['id'] ?>"></canvas>
+<canvas class="<?= basename($component['file'],'.php').$component['id'].$component_counter ?>"></canvas>
 <script>
 // Create chart
-var ctx = document.getElementsByClassName("<?= basename($component['file'],'.php').$component['id'] ?>");
+var ctx = document.getElementsByClassName("<?= basename($component['file'],'.php').$component['id'].$component_counter ?>");
 var chart = new Chart(ctx, {
     type:"doughnut",
     data: {

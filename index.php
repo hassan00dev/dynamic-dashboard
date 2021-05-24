@@ -112,6 +112,7 @@ if (isset($_GET['id'])) {
                                             if (mysqli_num_rows($col_query) > 0) { ?>
                                             <div class="col-md-<?= $col ?>">
                                             <?php
+                                                $component_counter = 0;
                                                 while($col_record = mysqli_fetch_assoc($col_query)){
                                                     $component_id = $col_record['component_id'];
                                                     $component_query = mysqli_query($conn, "SELECT * FROM components WHERE id = '$component_id'");
@@ -125,7 +126,10 @@ if (isset($_GET['id'])) {
                                                             </h3>
                                                         </div>
                                                         <div class="card-body">
-                                                            <?php include("components/".$component['file']); ?>
+                                                            <?php
+                                                                include("components/".$component['file']);
+                                                                $component_counter++;
+                                                            ?>
                                                         </div>
                                                     </div>
                                             <?php

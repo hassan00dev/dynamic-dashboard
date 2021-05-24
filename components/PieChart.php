@@ -1,6 +1,6 @@
-<canvas id="<?= basename($component['file'],'.php').$component['id'] ?>"></canvas>
+<canvas id="<?= basename($component['file'],'.php').$component['id'].$component_counter ?>"></canvas>
 <script>
-var ctx = document.getElementById("<?= basename($component['file'],'.php').$component['id'] ?>").getContext('2d');
+var ctx = document.getElementById("<?= basename($component['file'],'.php').$component['id'].$component_counter ?>").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'pie',
     data: {
