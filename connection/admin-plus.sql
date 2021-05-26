@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2021 at 08:41 PM
+-- Generation Time: May 26, 2021 at 10:37 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -62,11 +62,13 @@ CREATE TABLE `architectures` (
 --
 
 INSERT INTO `architectures` (`id`, `dashboard_id`, `row_position`, `pattern`) VALUES
-(23, 1, 0, '12'),
-(24, 1, 1, '3,6,3'),
-(25, 2, 0, '3,6,3'),
-(26, 2, 1, '4,8'),
-(27, 2, 2, '4,8');
+(26, 4, 0, '12'),
+(27, 1, 0, '6,6'),
+(28, 1, 1, '9,3'),
+(32, 5, 0, '3,3,3,3'),
+(33, 5, 1, '3,3,3,3'),
+(34, 5, 2, '6,6'),
+(38, 6, 0, '12');
 
 -- --------------------------------------------------------
 
@@ -206,14 +208,24 @@ CREATE TABLE `columns` (
 --
 
 INSERT INTO `columns` (`id`, `column`, `component_id`, `row_position`, `col_position`, `vertical_col_position`, `dashboard_id`) VALUES
-(37, 12, 1, 0, 0, 0, 1),
-(38, 3, 4, 1, 0, 0, 1),
-(39, 3, 4, 1, 0, 1, 1),
-(40, 6, 3, 1, 1, 0, 1),
-(41, 6, 5, 0, 1, 0, 2),
-(42, 8, 8, 1, 1, 0, 2),
-(43, 8, 6, 1, 1, 1, 2),
-(44, 4, 7, 2, 0, 0, 2);
+(45, 12, 1, 0, 0, 0, 4),
+(46, 6, 1, 0, 0, 0, 1),
+(47, 6, 2, 0, 1, 0, 1),
+(48, 9, 10, 1, 0, 0, 1),
+(49, 9, 4, 1, 0, 1, 1),
+(50, 3, 5, 1, 1, 0, 1),
+(51, 3, 8, 1, 1, 1, 1),
+(62, 3, 1, 0, 0, 0, 5),
+(63, 3, 2, 0, 1, 0, 5),
+(64, 3, 3, 0, 2, 0, 5),
+(65, 3, 4, 0, 3, 0, 5),
+(66, 3, 5, 1, 0, 0, 5),
+(67, 3, 6, 1, 1, 0, 5),
+(68, 3, 7, 1, 2, 0, 5),
+(69, 3, 8, 1, 3, 0, 5),
+(70, 6, 9, 2, 0, 0, 5),
+(71, 6, 10, 2, 1, 0, 5),
+(76, 12, 3, 0, 0, 0, 6);
 
 -- --------------------------------------------------------
 
@@ -268,14 +280,14 @@ CREATE TABLE `components` (
 INSERT INTO `components` (`id`, `title`, `icon`, `file`) VALUES
 (1, 'Line Chart', 'fas fa-chart-pie', 'lineChart.php'),
 (2, 'Columns Chart', 'fas fa-bars', 'columnsChart.php'),
-(3, 'CPU Usage', 'fas fa-users', 'cpuUsage.php'),
+(3, 'Pie chart timeline', 'fas fa-users', 'pieChartTimeline.php'),
 (4, 'Dragging Interval', 'fas fa-desktop', 'draggingInterval.php'),
 (5, 'Pie Chart', 'fas fa-edit', 'PieChart.php'),
 (6, 'Switches', 'fas fa-th-list', 'switches.php'),
 (7, 'Total Clicks', 'fas fa-box', 'totalClicks.php'),
 (8, 'Gauge Chart', 'fas fa-box', 'gaugeChart.php'),
 (9, 'Gauge Styled Chart', 'fas fa-box', 'gaugeStyleChart.php'),
-(10, 'Ram Usage', 'fas fa-box', 'ramUsage.php');
+(10, 'Infographic style', 'fas fa-box', 'infographicstyle.php');
 
 -- --------------------------------------------------------
 
@@ -4842,8 +4854,10 @@ CREATE TABLE `dynamic_dashboards` (
 --
 
 INSERT INTO `dynamic_dashboards` (`id`, `name`, `color`) VALUES
-(1, 'default dashboard', '#ec2222'),
-(2, 'template 2', '#175e12');
+(1, 'Default Dashboard', '#000000'),
+(4, 'template 2', '#000000'),
+(5, 'all components', '#d12323'),
+(6, 'Timeline', '#142a1d');
 
 -- --------------------------------------------------------
 
@@ -5535,7 +5549,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `architectures`
 --
 ALTER TABLE `architectures`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `cadastro_curriculo_site`
@@ -5571,7 +5585,7 @@ ALTER TABLE `cargo_interno_historico`
 -- AUTO_INCREMENT for table `columns`
 --
 ALTER TABLE `columns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `complemento_empresa`
@@ -5607,7 +5621,7 @@ ALTER TABLE `dispositivo`
 -- AUTO_INCREMENT for table `dynamic_dashboards`
 --
 ALTER TABLE `dynamic_dashboards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `empresa`
@@ -5732,7 +5746,7 @@ ALTER TABLE `architectures`
 --
 ALTER TABLE `columns`
   ADD CONSTRAINT `columns_ibfk_2` FOREIGN KEY (`dashboard_id`) REFERENCES `dynamic_dashboards` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `columns_ibfk_3` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`);
+  ADD CONSTRAINT `columns_ibfk_3` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
