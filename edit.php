@@ -18,47 +18,14 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Edit Dashboard</title>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- sweetalert2 -->
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- custom css -->
-  <link rel="stylesheet" href="assets/css/custom.css">
+  <?php include_once('include/head.php'); ?>
   <link rel="stylesheet" href="assets/css/dragdrop.css" >
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
-
-    <!-- Preloader -->
-    <div class="preloader flex-column justify-content-center align-items-center">
-      <div class="spinner-border" role="status"></div>
-    </div>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="w-100">
-      <!-- Content Header (Page header) -->
-      <div class="content-header bg-dark">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1 class="m-0">Dashboard</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="edit.php">Dashboard</a></li>
-                <li class="breadcrumb-item active">Edit</a></li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content-header -->
-
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
@@ -106,16 +73,10 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
   </div>
   <!-- ./wrapper -->
 
-  <!-- jQuery -->
-  <script src="plugins/jquery/jquery.min.js"></script>
-  <!-- jQuery UI 1.11.4 -->
-  <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- jquery ui -->
+  <script src="global_assets/js/plugins/extensions/jquery_ui/full.min.js"></script>
   <!-- JQuery punch (finger) touch for mobiles -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha512-0bEtK0USNd96MnO4XhH8jhv3nyRF0eK87pJke6pkYf3cM0uDIhNJy9ltuzqgypoIFXw3JSuiy04tVk4AjpZdZw==" crossorigin="anonymous"></script>
-  <!-- Bootstrap 4 -->
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="dist/js/adminlte.min.js"></script>
   <script>
     let totalRows = 0;
     init();
@@ -281,7 +242,6 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
         },
         error:function(err){
           Swal.fire({
-            icon:"error",
             title:"Internal Server Error!",
             text:"Fetching dashboard detail failed!"
           });
@@ -295,7 +255,6 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
 
       if($("#dashboard-title").val() == ""){
         Swal.fire({
-          icon:"warning",
           title:"Empty!",
           text:"Please Enter Dashboard Title and Color"
         });
@@ -346,7 +305,6 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
         data:{data:data,dashboard:dashboardDetail},
         success:function(response,textStatus,xhr){
           Swal.fire({
-            icon:"success",
             title:"Dashboard Updated!",
             text:"Dashboard Updated Successfully."
           }).then((result) => {
@@ -355,7 +313,6 @@ $dashboard_detail = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM dynamic
         },
         error:function(err){
           Swal.fire({
-            icon:"error",
             title:"Internal Server Error!",
             text:"Something Went Wrong!"
           });

@@ -1,3 +1,9 @@
+.sort-highlight {
+  background: #e1e3e6;
+  border: 1px dashed #777c81;
+  margin-bottom: 10px;
+}
+
 .row-border {
   border: 2px dashed #007bff;
   border-radius: 5px;
