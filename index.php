@@ -20,108 +20,115 @@ if (isset($_GET['id'])) {
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
 
-                    <div class="row mt-3">
+                <div class="row mt-3">
 
-                        <section class="col-12">
-                            <div class="container-fluid">
-                                <div class="row mb-2">
-                                    <div class="col-md-3 d-flex justify-content-between">
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-tachometer-alt"></i> Dashboards
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <?php
-                                                $d_q = mysqli_query($conn, "SELECT * FROM dynamic_dashboards;");
-                                                while ($d_r = mysqli_fetch_assoc($d_q)) {
-                                                ?>
-                                                    <a class="dropdown-item <?php
-                                                        if($d_r['id'] == $dashboard_id){
-                                                            echo 'active';
-                                                        }
-                                                    ?>" href="index.php?id=<?= $d_r['id'] ?>"><i class="fas fa-circle" style="color:<?= $d_r['color'] ?>"></i> <?= $d_r['name'] ?></a>
-                                                <?php
-                                                }
-                                                ?>
-                                                <a class="dropdown-item" href="createDashboard.php"><i class="fas fa-plus-circle"></i> Add Dashboard</a>
-                                            </div>
+                    <section class="col-12">
+                        <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-md-3 d-flex justify-content-between">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-tachometer-alt"></i> Dashboards
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <?php
+                                            $d_q = mysqli_query($conn, "SELECT * FROM dynamic_dashboards;");
+                                            while ($d_r = mysqli_fetch_assoc($d_q)) {
+                                            ?>
+                                                <a class="dropdown-item <?php
+                                                                        if ($d_r['id'] == $dashboard_id) {
+                                                                            echo 'active';
+                                                                        }
+                                                                        ?>" href="index.php?id=<?= $d_r['id'] ?>"><i class="fas fa-circle" style="color:<?= $d_r['color'] ?>"></i> <?= $d_r['name'] ?></a>
+                                            <?php
+                                            }
+                                            ?>
+                                            <a class="dropdown-item" href="createDashboard.php"><i class="fas fa-plus-circle"></i> Add Dashboard</a>
                                         </div>
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="edit.php?id=<?= $dashboard_id ?>"><i class="fas fa-edit text-primary"></i> Edit Dashboard</a>
-                                                <?php if ($dashboard_id != 1) : ?>
-                                                    <a class="dropdown-item" href="javascript:void(0)" onclick="deleteDashboard('queries/deleteDashboard.php?id=<?= $dashboard_id ?>')"><i class="fas fa-trash text-danger"></i> Delete Dashboard</a>
-                                                <?php endif; ?>
-                                            </div>
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="edit.php?id=<?= $dashboard_id ?>"><i class="fas fa-edit text-primary"></i> Edit Dashboard</a>
+                                            <?php if ($dashboard_id != 1) : ?>
+                                                <a class="dropdown-item" href="javascript:void(0)" onclick="deleteDashboard('queries/deleteDashboard.php?id=<?= $dashboard_id ?>')"><i class="fas fa-trash text-danger"></i> Delete Dashboard</a>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="container-fluid">
-                                <?php
-                                $query = mysqli_query($conn, "SELECT * FROM architectures WHERE dashboard_id = '$dashboard_id'  ORDER BY row_position ASC");
-                                while ($row = mysqli_fetch_assoc($query)) {
-                                ?>
-                                    <div class="row">
-                                        <?php
-                                        $pattern = explode(',', $row['pattern']);
-                                        $row_position = $row['row_position'];
-                                        foreach ($pattern as $col_position => $col) {
-                                            $col_query = mysqli_query($conn, "SELECT * FROM `columns` WHERE dashboard_id = '$dashboard_id' && row_position = '$row_position' && col_position = '$col_position';");
-                                            if (mysqli_num_rows($col_query) > 0) { ?>
+                        </div>
+                        <div class="container-fluid">
+                            <?php
+                            $query = mysqli_query($conn, "SELECT * FROM architectures WHERE dashboard_id = '$dashboard_id'  ORDER BY row_position ASC");
+                            while ($row = mysqli_fetch_assoc($query)) {
+                            ?>
+                                <div class="row">
+                                    <?php
+                                    $pattern = explode(',', $row['pattern']);
+                                    $row_position = $row['row_position'];
+                                    foreach ($pattern as $col_position => $col) {
+                                        $col_query = mysqli_query($conn, "SELECT * FROM `columns` WHERE dashboard_id = '$dashboard_id' && row_position = '$row_position' && col_position = '$col_position';");
+                                        if (mysqli_num_rows($col_query) > 0) { ?>
                                             <div class="col-md-<?= $col ?>">
-                                            <?php
+                                                <?php
                                                 static $component_counter = 0;
-                                                while($col_record = mysqli_fetch_assoc($col_query)){
+                                                while ($col_record = mysqli_fetch_assoc($col_query)) {
                                                     $component_id = $col_record['component_id'];
                                                     $component_query = mysqli_query($conn, "SELECT * FROM components WHERE id = '$component_id'");
                                                     $component = mysqli_fetch_assoc($component_query);
-                                        ?>
+                                                ?>
                                                     <div class="card mb-1">
-                                                        <div class="card-header">
-                                                            <h3 class="card-title">
+                                                        <div class="card-header header-elements-inline">
+                                                            <h5 class="card-title">
                                                                 <i class="<?= $component['icon'] ?> mr-1"></i>
                                                                 <?= $component['title'] ?>
-                                                            </h3>
+                                                            </h5>
+                                                            <div class="header-elements">
+                                                                <div class="list-icons">
+                                                                    <a class="list-icons-item" data-action="collapse"></a>
+                                                                    <a class="list-icons-item" data-action="reload"></a>
+                                                                    <a class="list-icons-item" data-action="remove"></a>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="card-body">
                                                             <?php
-                                                                include("components/".$component['file']);
-                                                                $component_counter++;
+                                                            include("components/" . $component['file']);
+                                                            $component_counter++;
                                                             ?>
                                                         </div>
                                                     </div>
-                                            <?php
-                                                }?>
-                                                </div>
                                                 <?php
-                                            } else {
-                                            ?>
-                                                <div class="col-md-<?= $col ?>"></div>
+                                                } ?>
+                                            </div>
                                         <?php
-                                            }
-                                        }
+                                        } else {
                                         ?>
-                                    </div>
-                                <?php
-                                }
-                                ?>
-                            </div>
-                        </section>
+                                            <div class="col-md-<?= $col ?>"></div>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    </section>
 
-                    </div>
                 </div>
-            </section>
-            <!-- /.content -->
-        </div>
-        <!-- /.content-wrapper -->
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
     </div>
     <!-- ./wrapper -->
     <!-- custom js -->
